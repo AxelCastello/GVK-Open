@@ -218,172 +218,43 @@ export default function StandingsPage() {
                   </div>
 
                   {/* Top 3 Podium Section */}
-<div
-  style={{
-    position: "relative",
-    background: "#000",
-    borderRadius: 16,
-    padding: "16px 8px 0",
-    marginBottom: 24,
-    overflow: "hidden",
-  }}
->
+<div style={{ background: "#0a0a0a", borderRadius: 16, padding: "24px 12px 0", marginBottom: 24, overflow: "hidden", position: "relative" }}>
   {/* Faint crest watermark */}
-  <div
-    aria-hidden="true"
-    style={{
-      position: "absolute",
-      inset: 0,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      pointerEvents: "none",
-      zIndex: 0,
-      opacity: 0.06,
-      filter: "grayscale(1)",
-    }}
-  >
+  <div aria-hidden="true" style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none", zIndex: 0, opacity: 0.06, filter: "grayscale(1)" }}>
     <ShieldAvatar name="GVK Open" size={180} />
   </div>
 
-  {/* Podium slots */}
-  <div
-    style={{
-      position: "relative",
-      zIndex: 1,
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "flex-end",
-      gap: 6,
-      minHeight: 160,
-    }}
-  >
+  <div style={{ position: "relative", zIndex: 1, display: "flex", alignItems: "flex-end", justifyContent: "center", gap: 0 }}>
     {[
-      {
-        position: 2,
-        row: rankedRows.find((r) => r.rank === 2),
-        bg: "linear-gradient(145deg, #c0c0c0, #e8e8e8)",
-        border: "#a8a8a8",
-        barH: 80,
-      },
-      {
-        position: 1,
-        row: rankedRows.find((r) => r.rank === 1),
-        bg: "linear-gradient(145deg, #b8860b, #ffd700)",
-        border: "#b8860b",
-        barH: 110,
-      },
-      {
-        position: 3,
-        row: rankedRows.find((r) => r.rank === 3),
-        bg: "linear-gradient(145deg, #8b4513, #cd7f32)",
-        border: "#8b4513",
-        barH: 55,
-      },
+      { position: 2, row: rankedRows.find((r) => r.rank === 2), platformH: 80,  platformColor: "#8a9099", shimmer: "rgba(185,190,198,0.35)" },
+      { position: 1, row: rankedRows.find((r) => r.rank === 1), platformH: 120, platformColor: "#c9a84c", shimmer: "rgba(212,175,55,0.45)" },
+      { position: 3, row: rankedRows.find((r) => r.rank === 3), platformH: 55,  platformColor: "#a0632a", shimmer: "rgba(184,115,51,0.35)" },
     ].map((slot) => {
       const r = slot.row;
       if (!r) return null;
-
       return (
-        <div
-          key={`podium-${slot.position}`}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            flex: 1,
-            maxWidth: 110,
-            minWidth: 0,
-          }}
-        >
-          {/* Card */}
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              padding: "10px 6px 8px",
-              borderRadius: "10px 10px 0 0",
-              background: slot.bg,
-              width: "100%",
-              boxShadow: `0 0 16px ${slot.border}80`,
-            }}
-          >
-            {/* Avatar */}
-            <div style={{ position: "relative", marginBottom: 6 }}>
-              <div
-                aria-hidden="true"
-                style={{
-                  position: "absolute",
-                  inset: -6,
-                  background: slot.border,
-                  borderRadius: "50%",
-                  opacity: 0.3,
-                  filter: "blur(8px)",
-                }}
-              />
-              <ShieldAvatar
-                name={r.player_name}
-                size={slot.position === 1 ? 52 : 40}
-              />
-            </div>
-
-            {/* Rank */}
-            <div
-              style={{
-                fontFamily: '"Merriweather",Georgia,"Times New Roman",serif',
-                fontSize: 18,
-                fontWeight: 700,
-                color: "#000",
-                lineHeight: 1,
-                marginBottom: 3,
-              }}
-            >
-              #{slot.position}
-            </div>
-
-            {/* Name */}
-            <div
-              style={{
-                textAlign: "center",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-                width: "100%",
-                fontSize: 11,
-                fontWeight: 700,
-                color: "#000",
-                marginBottom: 3,
-                padding: "0 2px",
-              }}
-            >
-              {r.player_name}
-            </div>
-
-            {/* Points */}
-            <div
-              style={{
-                fontFamily: '"Merriweather",Georgia,"Times New Roman",serif',
-                fontSize: 13,
-                fontWeight: 700,
-                color: "#000",
-              }}
-            >
-              {r.total_points} pts
-            </div>
+        <div key={slot.position} className="podium-slot">
+          {/* Avatar above platform */}
+          <div className="podium-avatar-wrap">
+            <ShieldAvatar name={r.player_name} size={slot.position === 1 ? 58 : 46} />
           </div>
 
-          {/* Podium bar */}
+          {/* Platform block */}
           <div
+            className="podium-platform"
             style={{
-              width: "100%",
-              height: slot.barH,
-              background: `linear-gradient(to bottom, ${slot.border}60, ${slot.border}20)`,
-              borderLeft: `1px solid ${slot.border}80`,
-              borderRight: `1px solid ${slot.border}80`,
-              borderBottom: `2px solid ${slot.border}`,
+              height: slot.platformH,
+              background: `linear-gradient(160deg, ${slot.shimmer}, ${slot.platformColor})`,
+              boxShadow: `0 -2px 12px ${slot.shimmer}`,
             }}
-          />
+          >
+            {/* Rank number */}
+            <div className="podium-rank-num">{slot.position}</div>
+            {/* Name */}
+            <div className="podium-name">{r.player_name}</div>
+            {/* Points badge */}
+            <div className="podium-pts">{r.total_points} pts</div>
+          </div>
         </div>
       );
     })}
